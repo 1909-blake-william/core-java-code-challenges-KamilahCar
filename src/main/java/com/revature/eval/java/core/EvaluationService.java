@@ -487,19 +487,15 @@ public class EvaluationService {
 			String [] numbers = newInput.split("");
 			for (int i = 0; i < numbers.length; i++) {
 				//count++;
-				summation = (int) (summation + Math.pow(Integer.parseInt(numbers[i]), power));
+				summation = (int) (summation + Math.pow(Integer.parseInt
+						(numbers[i]), power));
 			}
-			
-			//count++;
-			System.out.println(newInput);
-			System.out.println(summation);
 					
 			if (summation == Integer.parseInt(newInput)) {
 				return true;
 			} else {
 				return false;
 			}
-			//
 			
 	}
 
@@ -513,43 +509,25 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
-	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		List<Long> possibleFactors = new ArrayList<Long>();
-		List<Long> actualFactors = new ArrayList<Long>();
-		//long notPrime
-		//possibleFactors.add(1L);
-		long division;
-		possibleFactors.add(2L);
-		possibleFactors.add(3L);
-		possibleFactors.add(4L);
-		possibleFactors.add(5L);
-		possibleFactors.add(6L);
-		possibleFactors.add(7L);
-		possibleFactors.add(8L);
-		possibleFactors.add(9L);
-		
-		for (int i = 0; i < possibleFactors.size(); i++) {
-			division = l / possibleFactors.get(i);
-			if (division % possibleFactors.get(i) == 0L) {
-				actualFactors.add(possibleFactors.get(i));
-			}
-		}
-		/*for (int j = 0; j < actualFactors.size(); j++) {
-			for (int k = 0; k < possibleFactors.size(); k++) {
-				division = actualFactors.get(j)/possibleFactors.get(k);
-				//16
-				//16/2, 16/3, 16/4, 16/5, 16/6, 16/7, 16/8, 16/9
-				//add 2, 8
-				//2/2 2/3, 2/4, 2/5, 2/6, 2/7, 2/8, 2/9
-				//8/2 8/3 8/4 8/5 8/6 8/7 8/8 8/9
-				if (division % actu)
-			}
+		public static List<Long> calculatePrimeFactorsOf(long l) {
+			// TODO Write an implementation for this method declaration
+			//List<Long> possibleFactors = new ArrayList<Long>();
+			List<Long> factors = new ArrayList<Long>();
+			//long notPrime
+			//possibleFactors.add(1L);
+			long division = l;
 			
-		}*/
-		
-		return null;
-	}
+			
+			for (long i = 2; i <= division; i++) {
+				if (division % i == 0) {
+					factors.add(i);
+					division = division / i;
+					i--;
+				}
+				
+			}
+			return factors;
+		}
 
 	/**
 	 * 11. Create an implementation of the rotational cipher, also sometimes called
@@ -592,10 +570,15 @@ public class EvaluationService {
 			char [] charArray = string.toCharArray();
 			int newASCIIValue;
 			char newChar;
+			String regex = "[^\\w]";
 			//iterate through the string
 			//for (int i = 0; i < string.length(); i++){
 			for (int i = 0; i < charArray.length; i++) {
 					//newASCIIValue = string.charAt(i) + key;
+					if ((string.charAt(i)+ "").matches(regex)) {
+						newASCIIValue = charArray[i];
+					} else {
+					
 					newASCIIValue = charArray[i] + key;
 					//ascii value of z is 122
 					if (newASCIIValue < 97 && newASCIIValue > 122) {
@@ -610,6 +593,7 @@ public class EvaluationService {
 					newChar = (char)newASCIIValue;
 					//string.charAt(i) = newChar;
 					charArray[i] = newChar;
+					}
 			}
 			//return string
 			return Arrays.toString(charArray);
@@ -669,20 +653,52 @@ public class EvaluationService {
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
 			int key = 0;
-			int newASCIIValue;
-			//values for a and z
-			//97 and 122 respectively
-			
-			char [] letters = new char[string.length()];
-			for (int i = 0; i < letters.length; i++) {
-				//newASCIIValue = string.charAt(i) + key;
-				if (letters[i] - 97 > letters[i] - 122) {
+			int newASCIIValue = 0;
+			String newString = "";
+			// values for a and z
+			// 97 and 122 respectively
+
+			char[] letters = new char[string.length()];
+			if (string.length() > 5) {
+				StringBuilder builder = new StringBuilder(string);
+				for (int j = 0; j < string.length(); j++) {
+					for (int i = 0; i < 5; i++) {
+						// newASCIIValue = string.charAt(i) + key;
+						if (builder.charAt(j) - 97 > 122 - builder.charAt(j)) {
+							key = 122 - builder.charAt(j);
+							newASCIIValue = 97 + key;
+							letters[j] = (char) newASCIIValue;
+						} else {
+							key = builder.charAt(j) - 97;
+							newASCIIValue = 122 - key;
+							letters[j] = (char) newASCIIValue;
+						}
+						if (i == 5) {
+							builder.append(" ");
+						}
+
+					}
+				}
+				newString = builder.toString();
+			} else {
+
+				for (int i = 0; i < 5; i++) {
+					// newASCIIValue = string.charAt(i) + key;
+					if (string.charAt(i) - 97 > 122 - string.charAt(i)) {
+						key = 122 - string.charAt(i);
+						newASCIIValue = 97 + key;
+						letters[i] = (char) newASCIIValue;
+					} else {
+						key = string.charAt(i) - 97;
+						newASCIIValue = 122 - key;
+						letters[i] = (char) newASCIIValue;
+					}
 					
 				}
-				newASCIIValue = letters[i] + key;
+				newString = Arrays.toString(letters);
 			}
+			return newString;
 			
-			return null;
 		}
 
 		/**
@@ -940,45 +956,62 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		//Strings of length 1 or less or invalid
-		//All nondigit numbers are disallowed
-		//Whitespace must be stripped
-		
-		//instance variables
-		String notLuhnNumbers = "^[0-9]";
-		String [] newLuhnNumber;
-		int doubleDigit;
-		char newDigit;
-		
-		//Checking String length
-		//Strings of length 1 or less or invalid
-		if(string.length() <= 1) {
+		// Strings of length 1 or less or invalid
+		// All nondigit numbers are disallowed
+		// Whitespace must be stripped
+
+		// instance variables
+		String unacceptableValues = "[^0-9]";
+		// String isDigit = "[0-9]";
+		String newLuhnNumber;
+		// String finalLuhnNumber;
+		int digit = 0;
+		int doubleDigit = 0;
+		int sum = 0;
+		//int [] numbersToBeAdded;
+		//int numbers;
+
+		// char newDigit;
+		// StringBuilder stringbuilder = new StringBuilder();
+		// stringbuilder.delete(0, string.length());
+
+		// stringbuilder.replace(0, 0, "");
+		// Checking String length
+		// Strings of length 1 or less or invalid
+		if (string.length() <= 1) {
 			return false;
 		}
-		//All nondigit numbers are disallowed
-		//Checking if character in String is a nondigit
-		newLuhnNumber = string.split(" ");
-		for(int i = string.length(); i > 0; i--) {
-			if ((newLuhnNumber[i]).matches(notLuhnNumbers)){
-				return false;
-			}
-			if (i != 0) {
-				//add character to new list or array
-				add(newLuhnNumber[i]);
-				i--;
-				doubleDigit = Character.getNumericValue(string.charAt(i)) * 2;
-				//change doubleDigit back into character and add it to new list or array
-				newDigit = (char)(doubleDigit + '0');
-				add(doubleDigit);
+		newLuhnNumber = string.replace(" ", "");
+		//numbersToBeAdded = new int[newLuhnNumber.length()];
+		// All nondigit numbers are disallowed
+		// Checking if character in String is a nondigit
+		// newLuhnNumber = string.split(" ");
+		// finalLuhnNumber = newLuhnNumber.toString();
+		for (int i = 0; i < newLuhnNumber.length(); i++) {
+			
+				if ((string.charAt(i) + "").matches(unacceptableValues)) {
+					return false;
+				}
+		}
+		for (int j = newLuhnNumber.length() - 1; j > 0; j--) {
+			//numbersToBeAdded[i] = Integer.parseInt(newLuhnNumber);
+			digit = Character.getNumericValue(newLuhnNumber.charAt(j));
+			// every 2nd character from the right is doubled
+			sum = sum + digit;
+			j--;
+			doubleDigit = Character.getNumericValue(newLuhnNumber.charAt(j)) * 2;
+			if (doubleDigit > 9) {
+				doubleDigit = doubleDigit - 9;
+				sum = sum + doubleDigit;
+			} else {
+				sum = sum + doubleDigit;
 			}
 		}
-		
-		//Stripping whitespace
-		
-		/*for (int i = 0; i < newLuhnNumber.length; i++) {
-			
-		}*/
-		return false;
+		if (sum % 10 == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
