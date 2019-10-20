@@ -3,17 +3,15 @@ package com.revature.eval.java.core;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.LocalTime.*;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.*;
 
 public class EvaluationService {
 
@@ -79,83 +77,82 @@ public class EvaluationService {
 	 * different lengths.
 	 *
 	 */
-	static class Triangle {
-		private double sideOne;
-		private double sideTwo;
-		private double sideThree;
+		static class Triangle {
+			private double sideOne;
+			private double sideTwo;
+			private double sideThree;
 
-		public Triangle() {
-			super();
-		}
+			public Triangle() {
+				super();
+			}
 
-		public Triangle(double sideOne, double sideTwo, double sideThree) {
-			this();
-			this.sideOne = sideOne;
-			this.sideTwo = sideTwo;
-			this.sideThree = sideThree;
-		}
+			public Triangle(double sideOne, double sideTwo, double sideThree) {
+				this();
+				this.sideOne = sideOne;
+				this.sideTwo = sideTwo;
+				this.sideThree = sideThree;
+			}
 
-		public double getSideOne() {
-			return sideOne;
-		}
+			public double getSideOne() {
+				return sideOne;
+			}
 
-		public void setSideOne(double sideOne) {
-			this.sideOne = sideOne;
-		}
+			public void setSideOne(double sideOne) {
+				this.sideOne = sideOne;
+			}
 
-		public double getSideTwo() {
-			return sideTwo;
-		}
+			public double getSideTwo() {
+				return sideTwo;
+			}
 
-		public void setSideTwo(double sideTwo) {
-			this.sideTwo = sideTwo;
-		}
+			public void setSideTwo(double sideTwo) {
+				this.sideTwo = sideTwo;
+			}
 
-		public double getSideThree() {
-			return sideThree;
-		}
+			public double getSideThree() {
+				return sideThree;
+			}
 
-		public void setSideThree(double sideThree) {
-			this.sideThree = sideThree;
-		}
+			public void setSideThree(double sideThree) {
+				this.sideThree = sideThree;
+			}
 
-		public boolean isEquilateral() {
-			if (sideOne == sideTwo) {
-				if (sideTwo == sideThree) {
+			public boolean isEquilateral() {
+				if (sideOne == sideTwo) {
 					if (sideOne == sideThree) {
-						return true;
+						if (sideTwo == sideThree) {
+							return true;
+						}
 					}
 				}
+				return false;
+
 			}
-			return false;
 
-		}
-
-		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			if (sideOne == sideTwo) {
-				if (sideTwo == sideThree) {
-					if (sideOne == sideThree) {
+			public boolean isIsosceles() {
+				// TODO Write an implementation for this method declaration
+				if (sideOne == sideTwo || sideTwo == sideThree) {
 						return true;
-					}
+				} else if (sideOne == sideThree || sideTwo == sideThree) {
+							return true;
+				} else {
+					return false;
 				}
 			}
-			return false;
-		}
 
-		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			if (sideOne != sideTwo) {
-				if (sideTwo != sideThree) {
+			public boolean isScalene() {
+				// TODO Write an implementation for this method declaration
+				if (sideOne != sideTwo) {
 					if (sideOne != sideThree) {
-						return true;
+						if (sideTwo != sideThree) {
+							return true;
+						}
 					}
 				}
+				return false;
 			}
-			return false;
-		}
 
-	}
+		}
 
 	/**
 	 * 4. Given a word, compute the scrabble score for that word.
@@ -302,7 +299,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	//Works
-	public static Map<String, Integer> wordCount(String string) {
+	public Map<String, Integer> wordCount(String string) {
 		// TODOWrite an implementation for this method declaration
 		Map<String, Integer> outputWords = new HashMap<String, Integer>();
 		
@@ -509,7 +506,7 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
-		public static List<Long> calculatePrimeFactorsOf(long l) {
+		public List<Long> calculatePrimeFactorsOf(long l) {
 			// TODO Write an implementation for this method declaration
 			//List<Long> possibleFactors = new ArrayList<Long>();
 			List<Long> factors = new ArrayList<Long>();
@@ -569,36 +566,49 @@ public class EvaluationService {
 			//end result char array
 			char [] charArray = string.toCharArray();
 			int newASCIIValue;
+			int oldASCIIValue = 0;
 			char newChar;
-			String regex = "[^\\w]";
+			//String regex = "\\W(\\.d+)";
+			String result = "";
 			//iterate through the string
-			//for (int i = 0; i < string.length(); i++){
 			for (int i = 0; i < charArray.length; i++) {
-					//newASCIIValue = string.charAt(i) + key;
-					if ((string.charAt(i)+ "").matches(regex)) {
-						newASCIIValue = charArray[i];
-					} else {
 					
+					if ((string.charAt(i)+ "").matches("[^a-zA-Z]")) {
+						newASCIIValue = charArray[i];
+						newChar = (char)newASCIIValue;
+						charArray[i] = newChar;
+					} else {
+					oldASCIIValue = string.charAt(i);
 					newASCIIValue = charArray[i] + key;
 					//ascii value of z is 122
-					if (newASCIIValue < 97 && newASCIIValue > 122) {
+					if (oldASCIIValue > 97 && oldASCIIValue < 122) {
+						if(newASCIIValue > 122) {
+							newASCIIValue = 97 + (newASCIIValue - 122);
+						} else {
+							
+						}
 						//ascii value of a is 97
-						newASCIIValue = 97 + (122 - newASCIIValue);
+						
 						//System.out.println("Old ASCII: " + string.codePoint(i));
 						//System.out.println("New ASCII: " + newASCIIValue);
 						//System.out.println("New char: " + newChar);
-					} else if (newASCIIValue < 97 && newASCIIValue > 65) {
-						newASCIIValue = 65 + (90 - newASCIIValue);
+					} else if (oldASCIIValue > 65 && oldASCIIValue < 90) {
+						if (newASCIIValue > 90) {
+							newASCIIValue = 65 + (newASCIIValue - 90);
+						}
 					}
+						
 					newChar = (char)newASCIIValue;
 					//string.charAt(i) = newChar;
 					charArray[i] = newChar;
 					}
 			}
 			//return string
-			return Arrays.toString(charArray);
+			result = Arrays.toString(charArray);
+			//result.replaceAll(regex, replacement);
+			
+			return result;
 		}
-
 	}
 
 	/**
@@ -615,7 +625,24 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		//a prime number is something that is only divisible by itself and 1
+		int numberChecked = 2;
+		int primes = 0;
+		int count = 2;
+		//i = 1
+		while (primes <= i) {
+			//if number is even, it is not prime except for 2
+			//if an even number is found, skip and keep checking
+				if (numberChecked == count) {
+					primes++;
+				}
+				if (numberChecked % count == 0) {
+					numberChecked++;
+					count++;	
+				}
+		}
+		
+		return primes;
 	}
 
 	/**
@@ -653,51 +680,69 @@ public class EvaluationService {
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
 			int key = 0;
+			int count = -1;
 			int newASCIIValue = 0;
-			String newString = "";
+			int oldASCIIValue = 0;
+			String newString = string.toLowerCase().replaceAll("\\W", "");
+			String blank = "";
+			String otherNewString = "";
+			//char [] letters = new char[newString.length()];
+			StringBuilder builder = new StringBuilder(blank);
+			
 			// values for a and z
 			// 97 and 122 respectively
+			
 
-			char[] letters = new char[string.length()];
-			if (string.length() > 5) {
-				StringBuilder builder = new StringBuilder(string);
-				for (int j = 0; j < string.length(); j++) {
-					for (int i = 0; i < 5; i++) {
-						// newASCIIValue = string.charAt(i) + key;
-						if (builder.charAt(j) - 97 > 122 - builder.charAt(j)) {
-							key = 122 - builder.charAt(j);
-							newASCIIValue = 97 + key;
-							letters[j] = (char) newASCIIValue;
-						} else {
-							key = builder.charAt(j) - 97;
-							newASCIIValue = 122 - key;
-							letters[j] = (char) newASCIIValue;
-						}
-						if (i == 5) {
+			//List <Character> letters = new ArrayList<Character>();
+			
+			
+				for (int j = 0; j < newString.length(); j++) {
+					oldASCIIValue = newString.charAt(j);
+					if (string.length() > 5) {
+						count++;
+						if (count % 5 == 0) {
 							builder.append(" ");
 						}
-
-					}
-				}
-				newString = builder.toString();
-			} else {
-
-				for (int i = 0; i < 5; i++) {
-					// newASCIIValue = string.charAt(i) + key;
-					if (string.charAt(i) - 97 > 122 - string.charAt(i)) {
-						key = 122 - string.charAt(i);
-						newASCIIValue = 97 + key;
-						letters[i] = (char) newASCIIValue;
+						
+						if(oldASCIIValue - 97 < 122 - oldASCIIValue) {
+								key = oldASCIIValue - 97;
+								newASCIIValue = 122 - key;
+								if(newASCIIValue < 97) {
+									newASCIIValue = 122 - (122 -  oldASCIIValue);
+								}
+							
+						} else {
+							key = 122 - oldASCIIValue;	
+							newASCIIValue = 97 + key;
+							if(newASCIIValue > 122) {
+								newASCIIValue = 97 + (newASCIIValue - 122);
+							}
+							
+						}
+						if ((newString.charAt(j)+"").matches("[^a-zA-Z]")) {
+							newASCIIValue = oldASCIIValue;
+						}
+						builder.append((char) newASCIIValue);
 					} else {
-						key = string.charAt(i) - 97;
-						newASCIIValue = 122 - key;
-						letters[i] = (char) newASCIIValue;
+						if(oldASCIIValue - 97 < 122 - oldASCIIValue) {
+							key = oldASCIIValue - 97;
+							newASCIIValue = 122 - key;
+							if(newASCIIValue < 97) {
+								newASCIIValue = 122 - (122 -  oldASCIIValue);
+							}
+						} else {
+							key = 122 - oldASCIIValue;	
+							newASCIIValue = 97 + key;
+							if(newASCIIValue > 122) {
+								newASCIIValue = 97 + (newASCIIValue - 122);
+							}
+						}
+						builder.append((char) newASCIIValue);
 					}
-					
+				
+					otherNewString = builder.toString();
 				}
-				newString = Arrays.toString(letters);
-			}
-			return newString;
+			return otherNewString;
 			
 		}
 
@@ -709,7 +754,49 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			int key = 0;
+			int newASCIIValue = 0;
+			int oldASCIIValue = 0;
+			String newString = string.toLowerCase().replaceAll("\\W", "");
+			String blank = "";
+			String otherNewString = "";
+			//char [] letters = new char[newString.length()];
+			StringBuilder builder = new StringBuilder(blank);
+			
+			// values for a and z
+			// 97 and 122 respectively
+			
+
+			//List <Character> letters = new ArrayList<Character>();
+			
+			
+				for (int j = 0; j < newString.length(); j++) {
+					oldASCIIValue = newString.charAt(j);
+						
+						if(oldASCIIValue - 97 < 122 - oldASCIIValue) {
+								key = oldASCIIValue - 97;
+								newASCIIValue = 122 - key;
+								if(newASCIIValue < 97) {
+									newASCIIValue = 122 - (122 -  oldASCIIValue);
+								}
+							
+						} else {
+							key = 122 - oldASCIIValue;	
+							newASCIIValue = 97 + key;
+							if(newASCIIValue > 122) {
+								newASCIIValue = 97 + (newASCIIValue - 122);
+							}
+							
+						}
+						if ((newString.charAt(j)+"").matches("[^a-zA-Z]")) {
+							newASCIIValue = oldASCIIValue;
+						}
+						builder.append((char) newASCIIValue);
+				}
+				
+			otherNewString = builder.toString();
+			return otherNewString;
+			
 		}
 	}
 
